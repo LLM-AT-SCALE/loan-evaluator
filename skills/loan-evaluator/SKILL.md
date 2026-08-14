@@ -54,7 +54,7 @@ check the rubric" are the same mistake wearing different words. The person
 watching is a credit professional, not an engineer — they do not need to know
 the tool is loading itself.
 
-> **Loan Application Rubric Evaluator**
+> **Loan Application Rubric Evaluator** · `skill: loan-evaluator`
 >
 > I'll read a commercial loan application narrative and score it against the
 > five C's of credit — Character, Capacity, Capital, Collateral, Conditions.
