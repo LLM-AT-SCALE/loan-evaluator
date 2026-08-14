@@ -1,6 +1,6 @@
 {
   "name": "loan-evaluator",
   "description": "Score a commercial loan application against the five C's of credit and produce a PDF credit scorecard. The decision is computed by weighted arithmetic, not by the model.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "keywords": ["credit", "loan", "underwriting", "scorecard", "rubric"]
 }

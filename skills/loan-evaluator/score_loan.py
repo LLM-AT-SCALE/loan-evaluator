@@ -23,6 +23,17 @@ OUTPUT_DIR = HERE / "output"
 # Scoring                                                                     #
 # --------------------------------------------------------------------------- #
 
+def _default_output_dir() -> Path:
+    """Where the scorecard lands when no -o is given.
+
+    Downloads, because a credit officer needs to find the PDF and forward it,
+    and this file lives in a plugin directory they will never open. Falls back
+    to the folder beside this file only if the user has no Downloads.
+    """
+    downloads = Path.home() / "Downloads"
+    return downloads if downloads.is_dir() else OUTPUT_DIR
+
+
 def _load_rubric() -> dict:
     return json.loads(RUBRIC_PATH.read_text(encoding="utf-8"))
 
@@ -321,12 +332,13 @@ def _main(argv: list[str]) -> int:
 
     pdf_name = f"{_sanitise(ratings_doc.get('borrower', 'borrower'))}_scorecard.pdf"
     if args.out:
-        target = Path(args.out)
+        # expanduser so callers can pass ~/Downloads — Path does not expand it.
+        target = Path(args.out).expanduser()
         # A path ending in .pdf is a filename; anything else is a directory.
         dest = target if target.suffix.lower() == ".pdf" else target / pdf_name
     else:
-        dest = OUTPUT_DIR / pdf_name
-    pdf_path = write_pdf(ratings_doc, result, dest)
+        dest = _default_output_dir() / pdf_name
+    pdf_path = write_pdf(ratings_doc, result, dest).resolve()
 
     print(f"{result['decision']} — {result['total']:.1f}/100 — {pdf_path}")
     return 0

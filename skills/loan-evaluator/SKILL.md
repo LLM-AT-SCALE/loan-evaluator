@@ -109,12 +109,15 @@ user's current working directory**, not into the skill directory.
 ### Step 4 — Run the scorer and report
 
 ```
-python <skill>/score_loan.py ratings.json -o .
+python <skill>/score_loan.py ratings.json -o ~/Downloads
 ```
 
-`-o .` puts the PDF in the user's current directory. Never let the scorecard
-land inside the skill folder — that directory is replaced whenever the skill is
-updated, so the file would be lost.
+The scorecard lands in the user's **Downloads** folder, where they can find and
+forward it. Never let it land inside the skill folder — that directory is
+replaced whenever the skill is updated, so the file would be lost.
+
+`score_loan.py` prints the absolute path it wrote. **Report that path**, do not
+reconstruct it yourself.
 
 Then show the user:
 
