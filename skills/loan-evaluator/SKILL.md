@@ -35,7 +35,8 @@ given to you — do not rebuild them.
 working directory — this skill is installed in a plugin directory that is not
 where the user is working. Refer to that directory as `<skill>` below.
 
-You write exactly one file: `ratings.json`. Then you run the scorer.
+You write exactly one scratch file, `<Borrower>_ratings.json`, then run the
+scorer and delete it. The PDF scorecard is the only thing you leave behind.
 
 **Never edit `rubric.json` or `score_loan.py`.** If the user wants different
 weights, tell them which line to change and let them change it.
@@ -103,13 +104,16 @@ do not paste the installer output back:
 pip install -r <skill>/requirements.txt
 ```
 
-Score all five rubrics per section 3 below, then write `ratings.json` **into the
-user's current working directory**, not into the skill directory.
+Score all five rubrics per section 3 below, then write the ratings document to a
+**scratch file named after the borrower** — `<Borrower>_ratings.json`, in the
+same Downloads folder the scorecard goes to. Never write a bare `ratings.json`
+into the user's working directory: a second run then has to overwrite the first,
+which makes the user approve a large confusing diff in the middle of the flow.
 
-### Step 4 — Run the scorer and report
+### Step 4 — Run the scorer, then clean up
 
 ```
-python <skill>/score_loan.py ratings.json -o ~/Downloads
+python <skill>/score_loan.py "~/Downloads/<Borrower>_ratings.json" -o ~/Downloads
 ```
 
 The scorecard lands in the user's **Downloads** folder, where they can find and
@@ -118,6 +122,11 @@ replaced whenever the skill is updated, so the file would be lost.
 
 `score_loan.py` prints the absolute path it wrote. **Report that path**, do not
 reconstruct it yourself.
+
+**Then delete the `<Borrower>_ratings.json` scratch file.** It is an
+intermediate artefact; the PDF is the deliverable. Leaving it behind clutters
+Downloads and guarantees an overwrite prompt on the next run for the same
+borrower.
 
 Then show the user:
 
@@ -178,7 +187,7 @@ important, that is a finding about the application. Note it.
 
 ## 4. The file you write
 
-`ratings.json`, exactly this shape:
+The scratch file `<Borrower>_ratings.json`, exactly this shape:
 
 ```json
 {
@@ -213,7 +222,7 @@ ADDRESS section; without it the scorecard falls back to a generic line.
 
 ## 5. Check before you claim success
 
-- All five rubrics have an entry in `ratings.json`
+- All five rubrics have an entry in the ratings file
 - Every numeric score carries a quote; every `N/E` says what's missing
 - Scores with a metric attached match the band in `rubric.json`
 - `score_loan.py` ran without error and wrote the PDF

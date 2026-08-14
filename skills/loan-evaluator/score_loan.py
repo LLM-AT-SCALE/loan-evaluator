@@ -116,6 +116,17 @@ def _sanitise(name: str) -> str:
     return slug or "borrower"
 
 
+def _esc(text) -> str:
+    """Escape for ReportLab, which parses Paragraph text as XML.
+
+    Covenant language routinely contains '&' ("principal & interest") and '<'
+    ("<1.15x"), either of which raises a parse error mid-render.
+    """
+    return (str(text).replace("&", "&amp;")
+                     .replace("<", "&lt;")
+                     .replace(">", "&gt;"))
+
+
 def write_pdf(ratings_doc: dict, result: dict, path: Path) -> Path:
     from reportlab.lib import colors
     from reportlab.lib.pagesizes import LETTER
@@ -240,6 +251,19 @@ def write_pdf(ratings_doc: dict, result: dict, path: Path) -> Path:
                     body,
                 ))
                 story.append(Spacer(1, 2))
+
+    # The analyst's own covenant language, when supplied. Accept a list or a
+    # single string — the model writes either, and silently dropping it would
+    # lose the one part of the scorecard a credit officer can act on.
+    rec = ratings_doc.get("recommended_conditions")
+    items = [rec] if isinstance(rec, str) else list(rec or [])
+    items = [str(i).strip() for i in items if str(i).strip()]
+    if items:
+        story.append(Spacer(1, 4))
+        story.append(Paragraph("<b>Recommended conditions</b>", body))
+        for item in items:
+            story.append(Paragraph(f"&bull;&nbsp;{_esc(item)}", body))
+            story.append(Spacer(1, 2))
 
     # 6. Flags
     if result["flags"]:
