@@ -1,0 +1,100 @@
+{
+  "title": "Commercial Loan Application Narrative - Credit Evaluation Rubric",
+  "version": "1.0",
+  "framework": "The Five C's of Credit",
+  "scale": {
+    "min": 1,
+    "max": 5,
+    "meaning": "5 = strongest / lowest risk, 1 = weakest / highest risk. Use N/E when the narrative provides no evidence either way; N/E scores 0 points."
+  },
+  "rubrics": [
+    {
+      "id": "C1",
+      "name": "Character",
+      "weight": 20,
+      "question": "Does the borrower demonstrate the willingness and integrity to repay?",
+      "levels": {
+        "5": "Clean credit across all principals (FICO 740+). 5+ years relevant industry experience. No liens, judgments, or litigation. Long-standing banking relationship with no past dues. Disclosure complete and unprompted.",
+        "4": "Strong credit (FICO 680-739) with any past blemish fully explained and resolved. Solid experience. Minor historical item disclosed proactively.",
+        "3": "Acceptable credit (FICO 620-679) or a limited ownership track record. Some late payments in the last 24 months. Disclosure adequate but required follow-up.",
+        "2": "Weak credit (FICO below 620), recent delinquencies, an open lien or judgment, or thin management experience. Gaps in disclosure.",
+        "1": "Bankruptcy, charge-off, or unresolved judgment within 3 years; evidence of misrepresentation; or principals evasive on material facts."
+      }
+    },
+    {
+      "id": "C2",
+      "name": "Capacity",
+      "weight": 30,
+      "question": "Does cash flow cover the proposed debt service?",
+      "primary_metric": "Debt Service Coverage Ratio (DSCR) = Adjusted EBITDA / Total Annual Debt Service",
+      "levels": {
+        "5": "DSCR 1.35x or better. Revenue growing year over year. Add-backs minimal and well documented.",
+        "4": "DSCR 1.25x - 1.34x. Revenue stable to growing. Add-backs reasonable.",
+        "3": "DSCR 1.15x - 1.24x. Revenue flat. Coverage adequate but with little cushion.",
+        "2": "DSCR 1.00x - 1.14x. Revenue declining, or coverage depends heavily on aggressive add-backs.",
+        "1": "DSCR below 1.00x. Cash flow does not cover the proposed debt service."
+      },
+      "hard_rule": "A score of 1 on Capacity triggers an automatic Decline regardless of the weighted total."
+    },
+    {
+      "id": "C3",
+      "name": "Capital",
+      "weight": 20,
+      "question": "How much of the borrower's own money is at risk?",
+      "primary_metric": "Equity injection as a percentage of total project cost",
+      "levels": {
+        "5": "Equity injection 25% or more of total project cost. Strong tangible net worth. Six or more months of operating reserves. Consistent retained earnings.",
+        "4": "Equity injection 20% - 24%. Healthy net worth. Three to six months of reserves.",
+        "3": "Equity injection 15% - 19%. Adequate net worth. One to three months of reserves.",
+        "2": "Equity injection 10% - 14%. Thin net worth or negligible reserves.",
+        "1": "Equity injection below 10%, negative tangible net worth, or no meaningful liquidity."
+      }
+    },
+    {
+      "id": "C4",
+      "name": "Collateral",
+      "weight": 20,
+      "question": "What is the secondary source of repayment if cash flow fails?",
+      "primary_metric": "Loan-to-Value (LTV) = Loan Amount / Appraised Value",
+      "levels": {
+        "5": "LTV 65% or less. First lien on readily marketable collateral. Appraisal within 12 months. Unlimited personal guarantees from all principals.",
+        "4": "LTV 66% - 75%. First lien. Appraisal current. Guarantees in place.",
+        "3": "LTV 76% - 80%. First lien but collateral is specialized or slower to liquidate.",
+        "2": "LTV 81% - 90%, subordinate lien position, or illiquid / single-purpose collateral.",
+        "1": "LTV above 90%, effectively unsecured, no current valuation, or no guarantees."
+      }
+    },
+    {
+      "id": "C5",
+      "name": "Conditions",
+      "weight": 10,
+      "question": "Do the loan purpose, industry, and market environment support repayment?",
+      "levels": {
+        "5": "Growing, stable industry. No concentration above 20%. Use of proceeds specific and documented. Term well matched to asset life. No regulatory exposure.",
+        "4": "Stable industry. Concentration 20% - 30%. Sound, clearly stated purpose.",
+        "3": "Mixed or cyclical industry outlook, or single-customer concentration 30% - 40%. Purpose acceptable.",
+        "2": "Declining industry, concentration above 40%, or loan term materially longer than the useful life of the asset financed.",
+        "1": "Distressed sector, use of proceeds unclear or shifting, or unresolved regulatory / environmental liability."
+      }
+    }
+  ],
+  "scoring_method": {
+    "formula": "points = (score / 5) * weight",
+    "total": "Sum of all five rubrics. Maximum 100.",
+    "worked_example": "Capacity scored 4 of 5, weight 30 -> (4/5) * 30 = 24 points."
+  },
+  "decision_bands": [
+    { "min": 85, "max": 100, "decision": "APPROVE",                   "note": "Meets policy on all five C's. Proceed to documentation." },
+    { "min": 70, "max": 84,  "decision": "APPROVE WITH CONDITIONS",   "note": "Sound credit with identified weaknesses. Approve subject to covenants addressing the lowest-scoring rubrics." },
+    { "min": 55, "max": 69,  "decision": "REFER TO CREDIT COMMITTEE", "note": "Material weaknesses. Requires senior review, restructure, or additional support before a decision." },
+    { "min": 0,  "max": 54,  "decision": "DECLINE",                   "note": "Does not meet minimum underwriting standards." }
+  ],
+  "hard_rules": [
+    {
+      "id": "HR-1",
+      "trigger": "C2 (Capacity) score equals 1",
+      "action": "DECLINE",
+      "reason": "DSCR below 1.00x. The loan does not cover its own debt service; collateral strength does not substitute for repayment capacity."
+    }
+  ]
+}

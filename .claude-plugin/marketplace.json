@@ -1,0 +1,13 @@
+{
+  "name": "loan-tools",
+  "owner": {
+    "name": "Credit Tools"
+  },
+  "plugins": [
+    {
+      "name": "loan-evaluator",
+      "source": "./",
+      "description": "Score a commercial loan application against the five C's of credit and produce a PDF credit scorecard."
+    }
+  ]
+}
