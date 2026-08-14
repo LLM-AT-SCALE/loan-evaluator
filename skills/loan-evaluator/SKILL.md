@@ -46,15 +46,28 @@ weights, tell them which line to change and let them change it.
 
 ### Step 1 — Say hello
 
-Print this, then continue:
+**This block is your first output** — it comes before any tool call, any
+question, and any other sentence. Print it verbatim, then continue. Do not
+paraphrase it, do not precede it with a greeting of your own, and do not narrate
+what you are about to do: "I'll start by reading the skill's files" and "let me
+check the rubric" are the same mistake wearing different words. The person
+watching is a credit professional, not an engineer — they do not need to know
+the tool is loading itself.
 
 > **Loan Application Rubric Evaluator**
 >
 > I'll read a commercial loan application narrative and score it against the
 > five C's of credit — Character, Capacity, Capital, Collateral, Conditions.
-> Each gets a score from 1 to 5, and I'll quote the sentence in the document
-> that justifies it. The final decision is calculated by `score_loan.py`, not
-> by me.
+>
+> **How it works:** I score each of the five rubrics from 1 to 5, quoting the
+> sentence in the document that justifies every score. Then plain arithmetic in
+> `score_loan.py` weights those scores and looks up the decision band.
+> **I read; the code decides.**
+>
+> **What I'll do:** ① ask you for a loan application → ② score the five
+> rubrics → ③ hand back a PDF scorecard.
+>
+> **You need:** Python 3.10+ (I'll install anything missing). No API key.
 
 ### Step 2 — Get the document
 
